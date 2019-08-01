@@ -1,9 +1,15 @@
+import path from 'path'
 
 export default {
   mode: 'universal',
   /*
   ** Headers of the page
   */
+  vue: {
+    config: {
+      ignoredElements:[/^rs-/]
+    }
+  },
   head: {
     title: process.env.npm_package_name || '',
     meta: [
@@ -23,16 +29,14 @@ export default {
   ** Global CSS
   */
   css: [
+    '~assets/app.scss'
   ],
   /*
   ** Plugins to load before mounting the App
   */
   plugins: [
-  ],
-  /*
-  ** Nuxt.js dev-modules
-  */
-  devModules: [
+    '~plugins/rsmdc.client.js',
+    '~plugins/v-model3.client.js'
   ],
   /*
   ** Nuxt.js modules
@@ -46,7 +50,16 @@ export default {
     /*
     ** You can extend webpack config here
     */
-    extend(config, ctx) {
+   loaders: {
+      scss: {
+        includePaths: [
+          path.resolve(__dirname, 'node_modules')
+        ],
+        data: `
+          @import "~assets/variables";
+          @import "@rsmdc/rsmdc/rsmdc.scss";
+        `
+      }
     }
   }
 }
